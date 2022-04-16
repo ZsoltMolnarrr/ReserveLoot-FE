@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SessionComponent } from './components/session/session.component';
 
 const routes: Routes = [
-  { path: 'heroes', component: SessionComponent }
+  { path: 'session/:id', component: SessionComponent }
 ];
 
 @NgModule({

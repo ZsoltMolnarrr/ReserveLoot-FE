@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../../session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ export class HomeComponent implements OnInit {
 
   joinId = "";
 
-  constructor(private service: SessionService) {
+  constructor(private service: SessionService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
 
   loadSession(id: string): void {
     console.log(`Joining ${id}`)
+    this.router.navigate([`session/${id}`])
     // this.service
     //   .loadSession(id)
     //   .subscribe(session => console.log(session) );

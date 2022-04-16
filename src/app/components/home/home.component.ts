@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   joinId = "";
+  name = "";
+  description = "";
 
   constructor(private service: SessionService, private router: Router) {
   }
@@ -20,15 +22,11 @@ export class HomeComponent implements OnInit {
 
   onStart(): void {
     this.service
-      .createSession("Daedelus", "Magister's Terrace")
+      .createSession(this.name, this.description)
       .subscribe(id => this.loadSession(id));
   }
 
   loadSession(id: string): void {
-    console.log(`Joining ${id}`)
     this.router.navigate([`session/${id}`])
-    // this.service
-    //   .loadSession(id)
-    //   .subscribe(session => console.log(session) );
   }
 }

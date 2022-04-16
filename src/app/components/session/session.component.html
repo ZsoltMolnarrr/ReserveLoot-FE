@@ -2,6 +2,9 @@
     <div class="reservation">
         <div class="content">Leader: {{session.owner}} </div>
         <div class="description">{{session.description}} </div>
+        <input id="name" [(ngModel)]="name" placeholder="Character name">
+        <input id="item" [(ngModel)]="itemToReserve" placeholder="Item id">
+        <button type="button" (click)="addReservation()" [disabled]="itemToReserve == null">Reserve</button>
         <ul class="session">
             <li *ngFor="let reservation of session.reservations">
               <span class="badge">{{reservation.itemId}}</span> {{reservation.name}}

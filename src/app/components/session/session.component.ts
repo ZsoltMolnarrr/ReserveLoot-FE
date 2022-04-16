@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, concat, ignoreElements, map, Observable, Subscription, tap } from 'rxjs';
+import { SessionService } from 'src/app/session.service';
 import { Session, Reservation } from './../../models/Session';
 
 @Component({
@@ -7,43 +10,42 @@ import { Session, Reservation } from './../../models/Session';
   styleUrls: ['./session.component.css']
 })
 export class SessionComponent implements OnInit {
-
-  @Input() id = '';
+  sessionId = "";
+  name = "";
+  itemToReserve: number = 0;
 
   session: Session = {
-    owner: 'Daedelus',
-    reservations: [
-      {
-        name: "Tomm",
-        id:" asdasd",
-        itemId: 12345678,
-        modifiedAt: 1650127022,
-      } as Reservation,
-      {
-        name: "Adam",
-        id:" asdasd",
-        itemId: 3123133,
-        modifiedAt: 1650127022,
-      } as Reservation,
-      {
-        name: "James",
-        id:" asdasd",
-        itemId: 2234344,
-        modifiedAt: 1650127022,
-      } as Reservation,
-    ],
+    owner: '',
+    reservations: [],
     createdAt: 1650127022,
-    description: 'Tempest Keep'
+    description: ''
   }
 
-  constructor() {
-    //this.id$.pipe
+  constructor(private route: ActivatedRoute, private service: SessionService) {
   }
 
   ngOnInit(): void {
+    this.sessionId = this.route.snapshot.paramMap.get('id')!;
+    this.refresh().subscribe();
+  }
+
+  refresh(): Observable<never> {
+    return this.service.fetchSession(this.sessionId).pipe(
+      tap(session => this.session = session),
+      ignoreElements()
+    )    
   }
 
   deleteReservation(id:string) {
-    console.log(`Delete reservation ${id}`);
+    this.service.deleteReservation(this.sessionId,id)
+      .subscribe(unknown => this.refresh().subscribe())
+  }
+
+  addReservation() {
+    if (this.itemToReserve == 0) {
+      return;
+    }
+    this.service.reserve(this.sessionId, this.name, this.itemToReserve)
+      .subscribe(unknown => this.refresh().subscribe())
   }
 }

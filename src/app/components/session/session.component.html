@@ -1,0 +1,12 @@
+<div class="session">
+    <div class="reservation">
+        <div class="content">Leader: {{session.owner}} </div>
+        <div class="description">{{session.description}} </div>
+        <ul class="session">
+            <li *ngFor="let reservation of session.reservations">
+              <span class="badge">{{reservation.itemId}}</span> {{reservation.name}}
+              <button type="button" (click)="deleteReservation(reservation.id)">Delete</button>
+            </li>
+        </ul>
+    </div>
+</div>

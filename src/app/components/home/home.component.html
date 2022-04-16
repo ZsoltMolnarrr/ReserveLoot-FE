@@ -1,0 +1,5 @@
+<div>
+    <button (click)="onStart()">Start</button>
+    <input id="join" [(ngModel)]="joinId" placeholder="Enter session id..." (keyup.enter)="loadSession(joinId)">
+    <button (click)="loadSession(joinId)" [disabled]="joinId.length < 1">Join</button>
+</div>

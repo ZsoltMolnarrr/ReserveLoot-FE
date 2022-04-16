@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, concat, ignoreElements, map, Observable, Subscription, tap } from 'rxjs';
 import { SessionService } from 'src/app/session.service';
 import { Session, Reservation } from './../../models/Session';
@@ -13,6 +13,7 @@ export class SessionComponent implements OnInit {
   sessionId = "";
   name = "";
   itemToReserve: number = 0;
+  url = ""
 
   session: Session = {
     owner: '',
@@ -21,19 +22,27 @@ export class SessionComponent implements OnInit {
     description: ''
   }
 
-  constructor(private route: ActivatedRoute, private service: SessionService) {
+  constructor(
+    private router: Router, 
+    private activeRoute: ActivatedRoute, 
+    private service: SessionService) {
   }
 
   ngOnInit(): void {
-    this.sessionId = this.route.snapshot.paramMap.get('id')!;
+    this.sessionId = this.activeRoute.snapshot.paramMap.get('id')!;
     this.refresh().subscribe();
   }
 
   refresh(): Observable<never> {
     return this.service.fetchSession(this.sessionId).pipe(
-      tap(session => this.session = session),
+      tap(session => this.onSessionUpdate(session)),
       ignoreElements()
     )    
+  }
+
+  onSessionUpdate(session: Session) {
+    this.session = session;
+    this.url = window.location.origin + this.router.url;
   }
 
   deleteReservation(id:string) {

@@ -20,7 +20,10 @@ export class HomeComponent implements OnInit {
     console.log("HomeComponent init");
   }
 
-  onStart(): void {
+  start(): void {
+    if (this.name == "" || this.description == "") {
+      return;
+    }
     this.service
       .createSession(this.name, this.description)
       .subscribe(id => this.loadSession(id));

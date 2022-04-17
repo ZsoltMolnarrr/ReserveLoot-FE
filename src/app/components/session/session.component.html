@@ -5,7 +5,7 @@
         <div class="invite">Invite friends {{url}} </div>
         <input id="name" [(ngModel)]="name" placeholder="Character name">
         <input id="item" [(ngModel)]="itemToReserve" placeholder="Item id">
-        <button type="button" (click)="addReservation()" [disabled]="itemToReserve == null">Reserve</button>
+        <button type="button" (click)="addReservation()" [disabled]="itemToReserve == 0">Reserve</button>
         <ul class="session">
             <li *ngFor="let reservation of session.reservations">
               <span class="badge">{{reservation.itemId}}</span> {{reservation.name}}

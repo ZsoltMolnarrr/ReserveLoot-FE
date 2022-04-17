@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Session } from './models/Session';
+import { SecretService } from './secret.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class SessionService {
 
   baseUrl = "https://europe-west1-reserveloot-a4576.cloudfunctions.net/app/api";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private secret: SecretService) { }
 
   createSession(name: string, description: string): Observable<string> {
     let body: CreateSessionBody = {
@@ -20,7 +21,7 @@ export class SessionService {
     }
     let httpOptions = {
       headers: new HttpHeaders({
-        secret: 'my-client-secret'
+        secret: this.secret.getSecret()
       })
     };
     let url = this.baseUrl + "/session"
@@ -42,7 +43,7 @@ export class SessionService {
     }
     let httpOptions = {
       headers: new HttpHeaders({
-        secret: 'my-client-secret'
+        secret: this.secret.getSecret()
       })
     };
     let url = this.baseUrl + "/session/" + sessionId + "/reservations"
@@ -55,7 +56,7 @@ export class SessionService {
     }
     let httpOptions = {
       headers: new HttpHeaders({
-        secret: 'my-client-secret'
+        secret: this.secret.getSecret()
       })
     };
     let url = this.baseUrl + "/session/" + sessionId + "/reservations/" + reservationId

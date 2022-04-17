@@ -29,6 +29,7 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.name = localStorage.getItem("lastUsedName") ?? "";
     this.sessionId = this.activeRoute.snapshot.paramMap.get('id')!;
     this.refresh().subscribe();
   }
@@ -56,5 +57,12 @@ export class SessionComponent implements OnInit {
     }
     this.service.reserve(this.sessionId, this.name, this.itemToReserve)
       .subscribe(unknown => this.refresh().subscribe())
+  }
+
+  onReservationAdded() {
+    if (this.name != "") {
+      localStorage.setItem("lastUsedName", this.name)
+    }
+    this.refresh().subscribe()
   }
 }

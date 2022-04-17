@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("HomeComponent init");
+    this.name = localStorage.getItem("lastUsedName") ?? "";
   }
 
   start(): void {
@@ -26,7 +27,12 @@ export class HomeComponent implements OnInit {
     }
     this.service
       .createSession(this.name, this.description)
-      .subscribe(id => this.loadSession(id));
+      .subscribe(id => this.onSessionCreated(id) );
+  }
+
+  onSessionCreated(id: string) {
+    localStorage.setItem("lastUsedName", this.name),
+    this.loadSession(id)
   }
 
   loadSession(id: string): void {
